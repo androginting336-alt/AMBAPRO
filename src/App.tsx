@@ -417,7 +417,7 @@ function ModuleCard({ title, subtitle, icon, desc, color, onClick, highlight, th
 
 // --- MAIN APP ---
 function AmbasaltMainApp({ mode, onBack, onLogout, currentTheme, setTheme }: { mode: string, onBack: () => void, onLogout: () => void, currentTheme: string, setTheme: (t: string) => void }) {
-  const apiKey = ""; 
+  const apiKey = "AIzaSyAJIw7TzJ_2f7BKH3uHD4RQ3seHCxjrTg4"; 
   const t = THEMES[currentTheme];
 
   // STATE
