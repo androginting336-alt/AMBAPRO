@@ -140,7 +140,6 @@ function AuthScreen({ onLogin, theme, setTheme, currentTheme }) {
   const handleAuth = () => {
     setError("");
     
-    // Validasi Sederhana (Agar terlihat seperti sistem asli)
     if (!email || !password) {
       setError("Kredensial tidak boleh kosong.");
       return;
@@ -150,12 +149,11 @@ function AuthScreen({ onLogin, theme, setTheme, currentTheme }) {
       return;
     }
 
-    // Simulasi Loading Server
     setIsLoading(true);
     setTimeout(() => {
       setIsLoading(false);
-      onLogin(); // Masuk ke dashboard
-    }, 1500); // Delay 1.5 detik agar terasa 'mikir'
+      onLogin();
+    }, 1500);
   };
 
   return (
@@ -388,7 +386,9 @@ function ModuleCard({ title, subtitle, icon, desc, color, onClick, highlight, th
 
 // --- MAIN APP ---
 function AmbasaltMainApp({ mode, onBack, onLogout, currentTheme, setTheme }) {
-  const apiKey = ""; 
+  // ⚠️ KUNCI API TERTANAM ⚠️
+  const apiKey = "AIzaSyBOXJH1l7DG_kkqeKkLsYz6I-7L7Agz5sI"; 
+  
   const t = THEMES[currentTheme];
 
   // STATE
@@ -422,7 +422,7 @@ function AmbasaltMainApp({ mode, onBack, onLogout, currentTheme, setTheme }) {
     thin_section: { title: "Thin Section Microscopy", icon: <Microscope size={18} /> },
     rock: { title: "Hand Specimen Analysis", icon: <Hammer size={18} /> },
     mineral: { title: "Mineral Identification", icon: <Gem size={18} /> },
-  }[mode];
+  }[mode] || { title: "Analysis", icon: <Activity size={18}/> };
 
   // API & Logic
   const callGeminiWithRetry = async (payload, maxRetries = 3) => {
@@ -484,7 +484,9 @@ function AmbasaltMainApp({ mode, onBack, onLogout, currentTheme, setTheme }) {
         setVideoUrl(URL.createObjectURL(file)); 
         const reader = new FileReader();
         reader.onloadend = () => {
-            setVideoBase64(reader.result.split(',')[1]);
+            // FIX: Clean Javascript, no type assertion
+            const base64 = reader.result.split(',')[1];
+            setVideoBase64(base64);
             setResult(null); setErrorMsg(null);
         };
         reader.readAsDataURL(file);
