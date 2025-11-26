@@ -378,7 +378,10 @@ function SelectionScreen({ onSelect, onLogout, currentTheme, setTheme }: { onSel
 }
 
 function ModuleCard({ title, subtitle, icon, desc, color, onClick, highlight, theme }: { title: string, subtitle: string, icon: React.ReactNode, desc: string, color: string, onClick: () => void, highlight?: boolean, theme: Theme }) {
+   // Adjust specific card colors based on theme to ensure visibility
    const isObsidian = theme.id === 'obsidian';
+   
+   // Dynamic color mapping
    let accentColor = theme.colors.accent;
    let accentBorder = theme.colors.accentBorder;
    
@@ -417,7 +420,9 @@ function ModuleCard({ title, subtitle, icon, desc, color, onClick, highlight, th
 
 // --- MAIN APP ---
 function AmbasaltMainApp({ mode, onBack, onLogout, currentTheme, setTheme }: { mode: string, onBack: () => void, onLogout: () => void, currentTheme: string, setTheme: (t: string) => void }) {
+  // ⚠️ API KEY SUDAH TERTANAM ⚠️
   const apiKey = "AIzaSyAJIw7TzJ_2f7BKH3uHD4RQ3seHCxjrTg4"; 
+  
   const t = THEMES[currentTheme];
 
   // STATE
@@ -604,7 +609,6 @@ function AmbasaltMainApp({ mode, onBack, onLogout, currentTheme, setTheme }: { m
       
       let text = data.candidates[0].content.parts[0].text.replace(/```json|```/g, '').trim();
       
-      // Extra cleaning
       const firstOpen = text.indexOf('{');
       const lastClose = text.lastIndexOf('}');
       if (firstOpen !== -1 && lastClose !== -1) {
