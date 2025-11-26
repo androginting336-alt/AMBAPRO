@@ -8,37 +8,8 @@ import {
   LogOut, Mountain, Gem, ChevronLeft, Map, MessageSquare, Send, X, Sparkles, Bot, GraduationCap, ShieldCheck, Database, Sliders, Compass, Ruler, Hexagon, Hammer, Trash2, Palette, Loader2
 } from 'lucide-react';
 
-// --- TYPES ---
-// Definisi tipe data untuk TypeScript agar tidak error
-interface ThemeColors {
-  bg: string;
-  bgSec: string;
-  bgTert: string;
-  text: string;
-  textSec: string;
-  border: string;
-  accent: string;
-  accentBg: string;
-  accentHover: string;
-  accentBorder: string;
-  gradient: string;
-  logoPrimary: string;
-  logoSecondary: string;
-  glow: string;
-}
-
-interface Theme {
-  id: string;
-  label: string;
-  colors: ThemeColors;
-}
-
-interface ThemesMap {
-  [key: string]: Theme;
-}
-
 // --- THEME CONFIGURATION ---
-const THEMES: ThemesMap = {
+const THEMES = {
   obsidian: {
     id: 'obsidian',
     label: 'Obsidian Emerald',
@@ -102,7 +73,7 @@ const THEMES: ThemesMap = {
 };
 
 // --- COMPONENT: DYNAMIC LOGO ---
-function AmbasaltLogo({ size = 40, className = "", theme = THEMES.obsidian }: { size?: number, className?: string, theme?: Theme }) {
+function AmbasaltLogo({ size = 40, className = "", theme = THEMES.obsidian }) {
   return (
     <svg 
       width={size} 
@@ -125,7 +96,7 @@ function AmbasaltLogo({ size = 40, className = "", theme = THEMES.obsidian }: { 
 const gridPattern = `url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0h40v40H0V0zm1 1h38v38H1V1z' fill='%23ffffff' fill-opacity='0.05' fill-rule='evenodd'/%3E%3C/svg%3E")`;
 
 // --- COMPONENT: THEME SWITCHER ---
-function ThemeSwitcher({ currentTheme, setTheme }: { currentTheme: string, setTheme: (theme: string) => void }) {
+function ThemeSwitcher({ currentTheme, setTheme }) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -157,7 +128,7 @@ function ThemeSwitcher({ currentTheme, setTheme }: { currentTheme: string, setTh
 }
 
 // --- AUTH SCREEN (REALISTIC SIMULATION) ---
-function AuthScreen({ onLogin, theme, setTheme, currentTheme }: { onLogin: () => void, theme: Theme, setTheme: (t: string) => void, currentTheme: string }) {
+function AuthScreen({ onLogin, theme, setTheme, currentTheme }) {
   const [isRegister, setIsRegister] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -300,7 +271,7 @@ function AuthScreen({ onLogin, theme, setTheme, currentTheme }: { onLogin: () =>
 }
 
 // --- SELECTION SCREEN ---
-function SelectionScreen({ onSelect, onLogout, currentTheme, setTheme }: { onSelect: (mode: string) => void, onLogout: () => void, currentTheme: string, setTheme: (t: string) => void }) {
+function SelectionScreen({ onSelect, onLogout, currentTheme, setTheme }) {
   const t = THEMES[currentTheme];
 
   return (
@@ -377,11 +348,8 @@ function SelectionScreen({ onSelect, onLogout, currentTheme, setTheme }: { onSel
   );
 }
 
-function ModuleCard({ title, subtitle, icon, desc, color, onClick, highlight, theme }: { title: string, subtitle: string, icon: React.ReactNode, desc: string, color: string, onClick: () => void, highlight?: boolean, theme: Theme }) {
-   // Adjust specific card colors based on theme to ensure visibility
+function ModuleCard({ title, subtitle, icon, desc, color, onClick, highlight, theme }) {
    const isObsidian = theme.id === 'obsidian';
-   
-   // Dynamic color mapping
    let accentColor = theme.colors.accent;
    let accentBorder = theme.colors.accentBorder;
    
@@ -419,34 +387,32 @@ function ModuleCard({ title, subtitle, icon, desc, color, onClick, highlight, th
 }
 
 // --- MAIN APP ---
-function AmbasaltMainApp({ mode, onBack, onLogout, currentTheme, setTheme }: { mode: string, onBack: () => void, onLogout: () => void, currentTheme: string, setTheme: (t: string) => void }) {
-  // ⚠️ API KEY SUDAH TERTANAM ⚠️
-  const apiKey = "AIzaSyAJIw7TzJ_2f7BKH3uHD4RQ3seHCxjrTg4"; 
-  
+function AmbasaltMainApp({ mode, onBack, onLogout, currentTheme, setTheme }) {
+  const apiKey = ""; 
   const t = THEMES[currentTheme];
 
   // STATE
   const [analysisMode, setAnalysisMode] = useState('image'); 
-  const [pplImage, setPplImage] = useState<string | null>(null); 
-  const [pplBase64, setPplBase64] = useState<string | null>(null);
+  const [pplImage, setPplImage] = useState(null); 
+  const [pplBase64, setPplBase64] = useState(null);
   const [pplMime, setPplMime] = useState("image/jpeg");
-  const [xplImage, setXplImage] = useState<string | null>(null); 
-  const [xplBase64, setXplBase64] = useState<string | null>(null);
+  const [xplImage, setXplImage] = useState(null); 
+  const [xplBase64, setXplBase64] = useState(null);
   const [xplMime, setXplMime] = useState("image/jpeg");
   
-  const [videoFile, setVideoFile] = useState<File | null>(null);
-  const [videoUrl, setVideoUrl] = useState<string | null>(null);
-  const [videoBase64, setVideoBase64] = useState<string | null>(null);
+  const [videoFile, setVideoFile] = useState(null);
+  const [videoUrl, setVideoUrl] = useState(null);
+  const [videoBase64, setVideoBase64] = useState(null);
   
   const [loading, setLoading] = useState(false);
   const [loadingStep, setLoadingStep] = useState("");
-  const [result, setResult] = useState<any>(null);
-  const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const [result, setResult] = useState(null);
+  const [errorMsg, setErrorMsg] = useState(null);
   const [usePointCounting, setUsePointCounting] = useState(false);
   const [stageRotation, setStageRotation] = useState(0);
-  const [gridData, setGridData] = useState<any[]>([]); 
-  const [selectedCell, setSelectedCell] = useState<number | null>(null); 
-  const [expandedMineralIndex, setExpandedMineralIndex] = useState<number | null>(null);
+  const [gridData, setGridData] = useState([]); 
+  const [selectedCell, setSelectedCell] = useState(null); 
+  const [expandedMineralIndex, setExpandedMineralIndex] = useState(null);
 
   const isThinSection = mode === 'thin_section';
   const isHandSpecimen = mode === 'rock';
@@ -456,10 +422,10 @@ function AmbasaltMainApp({ mode, onBack, onLogout, currentTheme, setTheme }: { m
     thin_section: { title: "Thin Section Microscopy", icon: <Microscope size={18} /> },
     rock: { title: "Hand Specimen Analysis", icon: <Hammer size={18} /> },
     mineral: { title: "Mineral Identification", icon: <Gem size={18} /> },
-  }[mode] || { title: "Analysis", icon: <Activity size={18}/> };
+  }[mode];
 
   // API & Logic
-  const callGeminiWithRetry = async (payload: any, maxRetries = 3) => {
+  const callGeminiWithRetry = async (payload, maxRetries = 3) => {
     let attempt = 0;
     while (attempt < maxRetries) {
       try {
@@ -478,50 +444,47 @@ function AmbasaltMainApp({ mode, onBack, onLogout, currentTheme, setTheme }: { m
     }
   };
 
-  const handleSwitchAnalysisMode = (newMode: string) => {
+  const handleSwitchAnalysisMode = (newMode) => {
     setAnalysisMode(newMode);
     setResult(null); setGridData([]); setErrorMsg(null);
   };
 
-  const handleMainImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
+  const handleMainImageUpload = (e) => {
+    const file = e.target.files[0];
     if (file) {
       setPplMime(file.type);
       const reader = new FileReader();
       reader.onloadend = () => {
-        setPplImage(reader.result as string);
-        const base64 = (reader.result as string).split(',')[1];
-        setPplBase64(base64);
+        setPplImage(reader.result);
+        setPplBase64(reader.result.split(',')[1]);
         setGridData([]); setResult(null); setErrorMsg(null);
       };
       reader.readAsDataURL(file);
     }
   };
 
-  const handleXPLUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
+  const handleXPLUpload = (e) => {
+    const file = e.target.files[0];
     if (file) {
       setXplMime(file.type);
       const reader = new FileReader();
       reader.onloadend = () => {
-        setXplImage(reader.result as string);
-        const base64 = (reader.result as string).split(',')[1];
-        setXplBase64(base64);
+        setXplImage(reader.result);
+        setXplBase64(reader.result.split(',')[1]);
       };
       reader.readAsDataURL(file);
     }
   };
 
-  const handleVideoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
+  const handleVideoUpload = (e) => {
+    const file = e.target.files[0];
     if (file) {
         if(file.size > 25*1024*1024) { setErrorMsg("Video max 25MB"); return; }
         setVideoFile(file);
         setVideoUrl(URL.createObjectURL(file)); 
         const reader = new FileReader();
         reader.onloadend = () => {
-            const base64 = (reader.result as string).split(',')[1];
-            setVideoBase64(base64);
+            setVideoBase64(reader.result.split(',')[1]);
             setResult(null); setErrorMsg(null);
         };
         reader.readAsDataURL(file);
@@ -609,6 +572,7 @@ function AmbasaltMainApp({ mode, onBack, onLogout, currentTheme, setTheme }: { m
       
       let text = data.candidates[0].content.parts[0].text.replace(/```json|```/g, '').trim();
       
+      // Extra cleaning
       const firstOpen = text.indexOf('{');
       const lastClose = text.lastIndexOf('}');
       if (firstOpen !== -1 && lastClose !== -1) {
@@ -620,7 +584,7 @@ function AmbasaltMainApp({ mode, onBack, onLogout, currentTheme, setTheme }: { m
       setResult(parsed);
       if (isThinSection && parsed.gridAnalysis) setGridData(parsed.gridAnalysis);
 
-    } catch (error: any) {
+    } catch (error) {
       console.error(error);
       setErrorMsg(error.message || "Analisis Gagal. Coba lagi.");
     } finally {
@@ -819,13 +783,13 @@ function AmbasaltMainApp({ mode, onBack, onLogout, currentTheme, setTheme }: { m
                           <div>
                              <span className={`text-[10px] ${t.colors.textSec} font-bold block mb-2 border-b ${t.colors.border} pb-1`}>INDONESIA</span>
                              <ul className="space-y-1">
-                                {result.occurrences.indonesia?.map((loc: any, i: number) => <li key={i} className={`text-xs ${t.colors.textSec} flex items-center gap-2`}><div className={`w-1 h-1 rounded-full ${t.colors.accentBg}`}></div> {loc}</li>)}
+                                {result.occurrences.indonesia?.map((loc, i) => <li key={i} className={`text-xs ${t.colors.textSec} flex items-center gap-2`}><div className={`w-1 h-1 rounded-full ${t.colors.accentBg}`}></div> {loc}</li>)}
                              </ul>
                           </div>
                           <div>
                              <span className={`text-[10px] ${t.colors.textSec} font-bold block mb-2 border-b ${t.colors.border} pb-1`}>GLOBAL</span>
                              <div className="flex flex-wrap gap-2">
-                                {result.occurrences.world?.map((loc: any, i: number) => <span key={i} className={`text-[10px] ${t.colors.textSec} ${t.colors.bgTert} px-2 py-1 rounded`}>{loc}</span>)}
+                                {result.occurrences.world?.map((loc, i) => <span key={i} className={`text-[10px] ${t.colors.textSec} ${t.colors.bgTert} px-2 py-1 rounded`}>{loc}</span>)}
                              </div>
                           </div>
                        </div>
@@ -863,7 +827,7 @@ function AmbasaltMainApp({ mode, onBack, onLogout, currentTheme, setTheme }: { m
                        <h3 className={`text-xs font-bold ${t.colors.textSec} uppercase tracking-widest flex items-center gap-2`}><Layers size={14}/> {isMineral ? "Properti Fisik & Kristal" : "Komposisi Mineral"}</h3>
                     </div>
                     <div className="space-y-2">
-                      {result.minerals?.map((m: any, i: number) => (
+                      {result.minerals?.map((m, i) => (
                         <div key={i} className={`border ${t.colors.border} rounded-lg overflow-hidden ${t.colors.accentBorder.replace('border', 'hover:border')} transition-colors`}>
                            <div className={`${t.colors.bg} p-3 flex justify-between items-center cursor-pointer`} onClick={() => setExpandedMineralIndex(expandedMineralIndex === i ? null : i)}>
                               <div className="flex items-center gap-3">
@@ -898,7 +862,7 @@ function AmbasaltMainApp({ mode, onBack, onLogout, currentTheme, setTheme }: { m
   );
 }
 
-function OpticalItem({ label, value }: { label: string, value: string }) {
+function OpticalItem({ label, value }) {
   return (
     <div>
       <span className="text-[9px] opacity-70 font-bold uppercase tracking-wider block mb-0.5">{label}</span>
@@ -907,7 +871,7 @@ function OpticalItem({ label, value }: { label: string, value: string }) {
   );
 }
 
-function InteractiveGrid({ gridData, selectedCell, onSelect }: { gridData: any[], selectedCell: number | null, onSelect: (index: number) => void }) {
+function InteractiveGrid({ gridData, selectedCell, onSelect }) {
   return (
     <div className="absolute inset-0 grid grid-cols-4 grid-rows-4 z-40 pointer-events-auto shadow-[inset_0_0_20px_rgba(0,0,0,0.5)]">
       {Array.from({ length: 16 }).map((_, i) => {
@@ -956,7 +920,7 @@ export default function App() {
 
   const handleLoginSuccess = () => setScreen('selection');
   
-  const handleSelectMode = (mode: string) => {
+  const handleSelectMode = (mode) => {
     setAppMode(mode);
     setScreen('app');
   };
